@@ -21,7 +21,6 @@ class PlayerData(BaseModel):
     Stress_Level_Score: float
     Nutrition_Quality_Score: float
     Warmup_Routine_Adherence: int
-    Injury_Next_Season: int
     BMI: float
     Position_Defender: bool
     Position_Forward: bool
@@ -47,7 +46,6 @@ class PlayerData(BaseModel):
                 "Stress_Level_Score": 78.0,
                 "Nutrition_Quality_Score": 74.0,
                 "Warmup_Routine_Adherence": 1,
-                "Injury_Next_Season": 0,
                 "BMI": 22.6,
                 "Position_Defender": False,
                 "Position_Forward": True,
@@ -89,7 +87,6 @@ def predict_injury_score(player: PlayerData):
         player.Stress_Level_Score,
         player.Nutrition_Quality_Score,
         player.Warmup_Routine_Adherence,
-        player.Injury_Next_Season,
         player.BMI,
         player.Position_Defender,
         player.Position_Forward,
@@ -97,10 +94,10 @@ def predict_injury_score(player: PlayerData):
         player.Position_Midfielder
     ]])
     
-    prediction = model.predict(features)[0]
+    prediction = int(model.predict(features))
     
     return {
-        "predicted_injury_score": round(prediction, 2),
+        "predicted_injury_score": prediction,
         "interpretation": get_interpretation(prediction)
     }
 
